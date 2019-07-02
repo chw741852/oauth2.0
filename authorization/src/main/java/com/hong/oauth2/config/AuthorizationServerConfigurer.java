@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
@@ -41,10 +42,13 @@ public class AuthorizationServerConfigurer extends AuthorizationServerConfigurer
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient("client")
-                .authorizedGrantTypes("authorization_code", "refresh_token")
-                .secret("{noop}secret")
-                .scopes("all");
+                .authorizedGrantTypes("authorization_code","client_credentials","password","implicit","refresh_token")
+                .secret(PasswordEncoderFactories.createDelegatingPasswordEncoder().encode("123456"))
+                .scopes("test")
+                .redirectUris("http://baidu.com");
     }
+
+    // http://localhost:8080/oauth/authorize?response_type=code&client_id=client&redirect_uri=http://baidu.com
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {

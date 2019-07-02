@@ -1,7 +1,7 @@
 spring:
   cloud:
     consul:
-      host: 10.61.15.209
+      host: 10.66.105.35
       config:
         format: YAML
         default-context: oauth
@@ -19,4 +19,4 @@ spring:
   profiles: dev
   cloud:
     consul:
-      host: 10.61.15.209
+      host: 10.66.105.35

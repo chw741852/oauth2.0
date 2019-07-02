@@ -5,3 +5,8 @@ spring:
   application:
     name: oauth-authorization
 
+security:
+  oauth2:
+    client:
+      client-id: client
+      client-secret: 123456
