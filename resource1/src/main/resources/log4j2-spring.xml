@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="CONSOLE_PATTERN">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{%5p} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}[%L]}{cyan} %clr{:}{faint} %m%n</Property>
+        <Property name="FILE_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${sys:PID} --- [%15.15t] %-40.40c{1.}[%L] : %m%n</Property>
+        <!-- 日志文件大小 -->
+        <Property name="FILE_SIZE">256MB</Property>
+        <Property name="LOG_FILE_NAME">/data/logs/oauth2.0/resource1.log</Property>
+        <Property name="LOG_GZ_FILE_NAME">/data/logs/oauth2.0/%d{yyyy-MM}/resource1_%d{yyyy-MM-dd}-%i.log.gz</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${CONSOLE_PATTERN}"/>
+        </Console>
+
+        <RollingFile name="File" fileName="${sys:LOG_FILE_NAME}" filePattern="${sys:LOG_GZ_FILE_NAME}">
+            <PatternLayout pattern="${FILE_PATTERN}"/>
+            <Policies>
+                <!-- 每天压缩一次 -->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+                <!-- 每256MB压缩一次 -->
+                <SizeBasedTriggeringPolicy size="${FILE_SIZE}" />
+            </Policies>
+            <DefaultRolloverStrategy max="100"/>
+        </RollingFile>
+    </Appenders>
+    <loggers>
+        <AsyncLogger name="org" level="info"/>
+        <AsyncLogger name="com.netflix" level="info"/>
+        <AsyncLogger name="io.lettuce" level="info"/>
+        <AsyncLogger name="io.netty" level="info"/>
+        <AsyncLogger name="reactor" level="info"/>
+        <AsyncLogger name="de.codecentric.boot.admin" level="info"/>
+
+        <AsyncRoot level="debug" includeLocation="true">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </AsyncRoot>
+    </loggers>
+</Configuration>
