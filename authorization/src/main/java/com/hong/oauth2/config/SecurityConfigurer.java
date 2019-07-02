@@ -1,6 +1,5 @@
 package com.hong.oauth2.config;
 
-import com.hong.oauth2.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,15 +17,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
  * Created by caihongwei on 2019/6/25 15:49.
  */
 @Configuration
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
-//@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
-    private UserService userService;
-
-    public SecurityConfigurer(UserService userService) {
-        this.userService = userService;
-    }
-
     @Bean
     @Override
     protected UserDetailsService userDetailsService() {
@@ -44,6 +37,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
