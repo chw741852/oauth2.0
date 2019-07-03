@@ -11,7 +11,7 @@ spring:
         instance-id: ${spring.application.name}:${spring.application.instance_id:${spring.profiles:}}:${server.port:}
         prefer-ip-address: true
     inetutils:
-      preferred-networks: 10.61
+      preferred-networks: 10.66
 
 ---
 # 开发环境
